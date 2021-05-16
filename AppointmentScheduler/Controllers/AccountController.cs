@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace AppointmentScheduler.Controllers
 {
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public LoginController(ApplicationDbContext dbContext)
+        public AccountController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Register()
         {
             return View();
         }
