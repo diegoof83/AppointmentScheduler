@@ -9,7 +9,10 @@ namespace AppointmentScheduler.Models.ViewModels
     public class RegisterVM
     {
         [Required]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
 
         [Required]
         [EmailAddress]
