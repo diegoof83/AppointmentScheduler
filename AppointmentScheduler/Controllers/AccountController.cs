@@ -47,7 +47,7 @@ namespace AppointmentScheduler.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid email or password.");
             }
@@ -59,8 +59,8 @@ namespace AppointmentScheduler.Controllers
             if (!_roleManager.RoleExistsAsync(Helper.Admin).GetAwaiter().GetResult())
             {
                 await _roleManager.CreateAsync(new IdentityRole(Helper.Admin));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Doctor));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Patient));
+                await _roleManager.CreateAsync(new IdentityRole(Helper.ServiceProvider));
+                await _roleManager.CreateAsync(new IdentityRole(Helper.Client));
             }
             return View();
         }

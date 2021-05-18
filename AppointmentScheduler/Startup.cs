@@ -1,4 +1,5 @@
 using AppointmentScheduler.Models;
+using AppointmentScheduler.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,9 @@ namespace AppointmentScheduler
 
             //Adding User Identity
             services.AddIdentity<ApplicationIdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //Adding Transient(short life time) service
+            services.AddTransient<IAppointmentService, AppointmentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
