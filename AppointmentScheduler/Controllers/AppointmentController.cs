@@ -1,4 +1,5 @@
 ﻿using AppointmentScheduler.Services;
+using AppointmentScheduler.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,8 @@ namespace AppointmentScheduler.Controllers
         public IActionResult Index()
         {
             ViewBag.ClientList = _appointmentService.GetClientList();
-
             ViewBag.ServiceProviderList = _appointmentService.GetServiceProviderList();
+            ViewBag.Duration = Helper.GetTimeDropDown();
 
             return View();
         }

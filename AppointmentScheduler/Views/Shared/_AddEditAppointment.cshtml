@@ -1,5 +1,5 @@
 ﻿<div class="modal fade" role="dialog" id="appointmentInput" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog-centered">
+    <div class="modal-dialog">
         <div class="modal-content">
             <form id="appointmentForm" autocomplete="off" novalidate="novalidate">
                 <div class="modal-header">
@@ -18,6 +18,15 @@
                         <label for="clients">Select Client</label>
                         <select id="clientId" asp-items="@(new SelectList(ViewBag.ClientList,"Id","Name"))" class="form-control"></select>
                     </div>
+                    <div class="form-group">
+                        <label for="duration">Select duration</label>
+                        <select id="duration" asp-items="@ViewBag.Duration" class="form-control"></select>
+                    </div>
+                    <input type="hidden" id="id" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="onCloseModal();">Close</button> &nbsp;
+                    <button type="button" id="bntSubmit" class="bnt btn-primary" onclick="onSubmitFormModal();">Create Appointment</button>
                 </div>
             </form>
         </div>
