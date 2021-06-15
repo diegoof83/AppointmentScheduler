@@ -2,7 +2,7 @@
     <div class="container">
         @if (User.IsInRole(AppointmentScheduler.Utility.Helper.Admin))
         {
-            <div class="form-group row" id="serviceProviderList">
+            <div class="form-group row" id="divServiceProviderList">
                 <label>Select @AppointmentScheduler.Utility.Helper.ServiceProvider</label>
                 @Html.DropDownList("serviceProviderId", new SelectList(ViewBag.ServiceProviderList, "Id", "Name"), new { @class = "form-control select2" })
             </div>

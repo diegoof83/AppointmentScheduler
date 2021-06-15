@@ -23,6 +23,18 @@ function InitializeCalendar() {
     }
 }
 
+function onShowModal(obj, isEventDetail) {
+    $("#appointmentInput").modal("show");
+}
+
+function onCloseModal() {
+    $("#appointmentInput").modal("hide");
+}
+
+function onSubmitFormModal() {
+    $("#appointmentInput").modal("hide");
+}
+
 //NEW IMPLEMENTATION IS NOT WORKING
 //function InitializeCalendar() {
 //    try {
@@ -45,14 +57,3 @@ function InitializeCalendar() {
 //        alert(e);
 //    }
 //}
-
-function onShowModal(obj, isEventDetail) {
-    $("#appointmentInput").modal("show");
-}
-
-function onCloseModal() {
-    $("#appointmentInput").modal("hide");
-}
-
-function onSubmitFormModal() {
-    $("#appointmentInput").modal("hide");

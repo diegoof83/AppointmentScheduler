@@ -30,7 +30,7 @@ namespace AppointmentScheduler.Utility
         {
             int minute = 60;
             List<SelectListItem> duration = new List<SelectListItem>();
-            for (int i = 1; i <= 12; i++)
+            for (int i = 1; i <= 7; i++)
             {
                 duration.Add(new SelectListItem { Value = minute.ToString(), Text = i + " Hr" });
                 minute = minute + 30;
