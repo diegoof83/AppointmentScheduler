@@ -17,6 +17,36 @@ namespace AppointmentScheduler.Services
             _dbContext = dbContext;
         }
 
+        public async Task<int> Create(AppointmentVM model)
+        {
+            if (model == null)
+                return 0;
+            if (model.Id > 0)//update
+            {
+                return 1;
+            }
+            else//insert
+            {
+                Appointment appointment = new Appointment()
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    StartTime = model.StartTime,
+                    EndTime = GetEndTime(model),
+                    ServiceProviderId = model.ServiceProviderId,
+                    ClientId = model.ClientId,
+                    ResponsableAdminId = model.ResponsableAdminId
+                };
+                return 2;
+            }
+        }
+
+        private DateTime GetEndTime(AppointmentVM model)
+        {
+            DateTime endtime = model.StartTime.AddMinutes(model.Duration);
+            return endtime;
+        }
+
         /// <summary>
         /// Get the list of users that are clients registered in the application
         /// </summary>
@@ -37,6 +67,10 @@ namespace AppointmentScheduler.Services
             return clients;
         }
 
+        /// <summary>
+        /// Get the list of users that are service providers registered in the application
+        /// </summary>
+        /// <returns>ServiceProviderVM List</returns>
         public List<ServiceProviderVM> GetServiceProviderList()
         {
             var serviceProvider = (from users in _dbContext.Users

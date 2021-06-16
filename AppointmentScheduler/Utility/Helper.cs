@@ -12,6 +12,19 @@ namespace AppointmentScheduler.Utility
         public static string Client = "Client";
         public static string ServiceProvider = "Tattoo Artist";
 
+        //Appointment Responses
+        public static string AppointmentAdded = "Appointment added successfully.";
+        public static string AppointmentUpdated = "Appointment updated successfully.";
+        public static string AppointmentDeleted = "Appointment deleted successfully.";
+        public static string AppointmentExists = "Appointment for selected date and time already exists.";
+        public static string AppointmentNotExists = "Appointment not exists.";
+        public static string AppointmentAddError = "Something went wront, Please try again.";
+        public static string AppointmentUpdatError = "Something went wront, Please try again.";
+
+        public static string SomethingWentWrong = "Something went wront, Please try again.";
+        public static int SucessStatus = 1;
+        public static int FailureStatus = 0;
+
         /// <summary>
         /// Create a list with roles of user types for dropdowns
         /// </summary>

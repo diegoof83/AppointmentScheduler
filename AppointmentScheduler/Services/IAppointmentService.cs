@@ -9,7 +9,7 @@ namespace AppointmentScheduler.Services
     public interface IAppointmentService
     {
         public List<ServiceProviderVM> GetServiceProviderList();
-
         public List<ClientVM> GetClientList();
+        public Task<int> Create(AppointmentVM model);
     }
 }
