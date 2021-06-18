@@ -10,6 +10,6 @@ namespace AppointmentScheduler.Services
     {
         public List<ServiceProviderVM> GetServiceProviderList();
         public List<ClientVM> GetClientList();
-        public Task<int> Create(AppointmentVM model);
+        public Task<int> Book(AppointmentVM model);
     }
 }

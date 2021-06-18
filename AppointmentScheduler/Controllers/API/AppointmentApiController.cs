@@ -30,13 +30,13 @@ namespace AppointmentScheduler.Controllers.API
         }
 
         [HttpPost]
-        [Route("Create")]
-        public IActionResult Create(AppointmentVM appointment)
+        [Route("Book")]
+        public IActionResult Book(AppointmentVM appointment)
         {
             CommonResponse<int> response = new CommonResponse<int>();
             try
             {
-                response.Status = _appointmentService.Create(appointment).Result;
+                response.Status = _appointmentService.Book(appointment).Result;
                 if(response.Status == 1)
                 {
                     response.Message = Helper.AppointmentUpdated;

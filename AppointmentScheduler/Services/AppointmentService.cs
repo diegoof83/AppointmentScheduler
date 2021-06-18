@@ -17,7 +17,7 @@ namespace AppointmentScheduler.Services
             _dbContext = dbContext;
         }
 
-        public async Task<int> Create(AppointmentVM model)
+        public async Task<int> Book(AppointmentVM model)
         {
             if (model == null)
                 return 0;
@@ -37,6 +37,9 @@ namespace AppointmentScheduler.Services
                     ClientId = model.ClientId,
                     ResponsableAdminId = model.ResponsableAdminId
                 };
+
+                _dbContext.Appointments.Add(appointment);
+                await _dbContext.SaveChangesAsync();
                 return 2;
             }
         }

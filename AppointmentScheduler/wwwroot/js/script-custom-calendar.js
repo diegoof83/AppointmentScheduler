@@ -1,4 +1,11 @@
-﻿$(document).ready(function () {
+﻿var routeURL = location.protocol + "//" + location.host;
+
+$(document).ready(function () {
+    $("#startTime").kendoDateTimePicker({
+        value: new Date(),
+        dateInput: false
+    });
+
     InitializeCalendar();
 });
 
@@ -35,5 +42,32 @@ function onCloseModal() {
 }
 
 function onSubmitFormModal() {
-    $("#appointmentInput").modal("hide");
+    var requestData = {
+        Id: parseInt($("#id").val()),
+        Title: $("#title").val(),
+        Description: $("#description").val(),
+        StartTime: $("#startTime").val(),
+        Duration: $("#duration").val(),
+        ServiceProviderId: $("#serviceProviderId").val(),
+        ClientId: $("#clientId").val()
+    };
+
+    $.ajax({
+        url: routeURL + '/api/Appointment/Book',
+        type: 'POST',
+        data: JSON.stringify(requestData),
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.status === 1 || response.status === 2) {
+                $.notify(response.message, "success");
+                onCloseModal();
+            }
+            else {
+                $.notify(response.message, "error");
+            }
+        },
+        error: function (xhr) {
+            $.notify("Error", "error");
+        }
+    });
 }
