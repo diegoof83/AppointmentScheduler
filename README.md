@@ -1,5 +1,4 @@
-# AppointmentScheduler
-A project where service providers and clients arrange and schedule appointments using a calendar for services.
+A project where Tattoo artists and Clients arrange and schedule appointments using a calendar for services.
 * C#
 * .NET 5 Core MVC
 * Entity Framework Core
