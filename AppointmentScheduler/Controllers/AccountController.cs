@@ -13,12 +13,12 @@ namespace AppointmentScheduler.Controllers
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationIdentityUser> _userManager;
+        private readonly SignInManager<ApplicationIdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(ApplicationDbContext dbContext, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(ApplicationDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,
+            SignInManager<ApplicationIdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
@@ -47,7 +47,7 @@ namespace AppointmentScheduler.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid email or password.");
             }
@@ -59,8 +59,8 @@ namespace AppointmentScheduler.Controllers
             if (!_roleManager.RoleExistsAsync(Helper.Admin).GetAwaiter().GetResult())
             {
                 await _roleManager.CreateAsync(new IdentityRole(Helper.Admin));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Doctor));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Patient));
+                await _roleManager.CreateAsync(new IdentityRole(Helper.ServiceProvider));
+                await _roleManager.CreateAsync(new IdentityRole(Helper.Client));
             }
             return View();
         }
@@ -71,10 +71,13 @@ namespace AppointmentScheduler.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationIdentityUser
                 {
-                    UserName = model.Name,
-                    Email = model.Email
+                    //using email as the user name for the Login key
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName                    
                 };
 
                 //create a new user

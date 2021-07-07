@@ -1,4 +1,5 @@
 using AppointmentScheduler.Models;
+using AppointmentScheduler.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,12 +27,18 @@ namespace AppointmentScheduler
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Adding DB context
+            //Injecting DB context
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
 
-            //Adding User Identity
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            //Injecting User Identity
+            services.AddIdentity<ApplicationIdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //Injecting Transient(short life time) service for appointment
+            services.AddTransient<IAppointmentService, AppointmentService>();
+
+            //Injecting the accessor of the http context(User logged in) 
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace AppointmentScheduler.Models
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationIdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
+        public DbSet<Appointment> Appointments { get; set; }
     }
 }

@@ -9,8 +9,21 @@ namespace AppointmentScheduler.Utility
     public static class Helper
     {
         public static string Admin = "Admin";
-        public static string Patient = "Patient";
-        public static string Doctor = "Doctor";
+        public static string Client = "Client";
+        public static string ServiceProvider = "Tattoo Artist";
+
+        //Appointment Responses
+        public static string AppointmentAdded = "Appointment added successfully.";
+        public static string AppointmentUpdated = "Appointment updated successfully.";
+        public static string AppointmentDeleted = "Appointment deleted successfully.";
+        public static string AppointmentExists = "Appointment for selected date and time already exists.";
+        public static string AppointmentNotExists = "Appointment not exists.";
+        public static string AppointmentAddError = "Something went wront, Please try again.";
+        public static string AppointmentUpdatError = "Something went wront, Please try again.";
+
+        public static string SomethingWentWrong = "Something went wront, Please try again.";
+        public static int SucessStatus = 1;
+        public static int FailureStatus = 0;
 
         /// <summary>
         /// Create a list with roles of user types for dropdowns
@@ -21,9 +34,23 @@ namespace AppointmentScheduler.Utility
             return new List<SelectListItem>
             {
                 new SelectListItem{Text=Helper.Admin, Value=Helper.Admin},
-                new SelectListItem{Text=Helper.Doctor, Value=Helper.Doctor},
-                new SelectListItem{Text=Helper.Patient, Value=Helper.Patient}
+                new SelectListItem{Text=Helper.ServiceProvider, Value=Helper.ServiceProvider},
+                new SelectListItem{Text=Helper.Client, Value=Helper.Client}
             };
+        }
+
+        public static List<SelectListItem> GetTimeDropDown()
+        {
+            int minute = 60;
+            List<SelectListItem> duration = new List<SelectListItem>();
+            for (int i = 1; i <= 7; i++)
+            {
+                duration.Add(new SelectListItem { Value = minute.ToString(), Text = i + " Hr" });
+                minute = minute + 30;
+                duration.Add(new SelectListItem { Value = minute.ToString(), Text = i + " Hr 30 min" });
+                minute = minute + 30;
+            }
+            return duration;
         }
     }
 }
