@@ -15,7 +15,7 @@ namespace AppointmentScheduler.Models
         public int Duration { get; set; }
         public string ServiceProviderId { get; set; }
         public string ClientId { get; set; }
-        public bool IsApproved { get; set; }// The Service Provider is resposible for approvations
+        public bool IsApproved { get; set; }// The Service Provider is responsible for approvals
         public string ResponsableAdminId { get; set; } // Who has created the appointment
     }
 }

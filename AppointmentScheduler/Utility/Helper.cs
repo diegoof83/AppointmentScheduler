@@ -18,15 +18,16 @@ namespace AppointmentScheduler.Utility
         public static string AppointmentDeleted = "Appointment deleted successfully.";
         public static string AppointmentExists = "Appointment for selected date and time already exists.";
         public static string AppointmentNotExists = "Appointment not exists.";
-        public static string AppointmentAddError = "Something went wront, Please try again.";
-        public static string AppointmentUpdatError = "Something went wront, Please try again.";
+        public static string AppointmentAddError = "Something went wrong, Please try again.";
+        public static string AppointmentUpdatError = "Something went wrong, Please try again.";
 
-        public static string SomethingWentWrong = "Something went wront, Please try again.";
+        public static string SomethingWentWrong = "Something went wrong, Please try again.";
         public static int SucessStatus = 1;
         public static int FailureStatus = 0;
+        public static int UpdateStatus = 2;
 
         /// <summary>
-        /// Create a list with roles of user types for dropdowns
+        /// Create a list with roles of user types for drop-downs
         /// </summary>
         /// <returns>A list of all role options of users</returns>
         public static List<SelectListItem> UserRolesForDropDown()
