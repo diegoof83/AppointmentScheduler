@@ -6,3 +6,4 @@ A project where Tattoo artists and Clients arrange and schedule appointments usi
 * Bootstrap
 * cdnjs fullcalendar.js
 * cdnjs notify.js
+* Mailjet API
