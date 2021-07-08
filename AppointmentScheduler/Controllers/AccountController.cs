@@ -1,6 +1,7 @@
 ﻿using AppointmentScheduler.Models;
 using AppointmentScheduler.Models.ViewModels;
 using AppointmentScheduler.Utility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -47,6 +48,10 @@ namespace AppointmentScheduler.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    //Adding the logged user into the session
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    HttpContext.Session.SetString(Helper.LoggedUserSession, user.FullName);
+
                     return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid email or password.");

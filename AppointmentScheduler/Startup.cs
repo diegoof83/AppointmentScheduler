@@ -37,8 +37,17 @@ namespace AppointmentScheduler
             //Injecting Transient(short life time) service for appointment
             services.AddTransient<IAppointmentService, AppointmentService>();
 
-            //Injecting the accessor of the http context(User logged in) 
+            //Injecting the accessor of the HTTP context(User logged in) 
             services.AddHttpContextAccessor();
+
+            //Session configurations
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +69,7 @@ namespace AppointmentScheduler
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

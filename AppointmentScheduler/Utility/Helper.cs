@@ -8,9 +8,13 @@ namespace AppointmentScheduler.Utility
 {
     public static class Helper
     {
+        //User Roles
         public static string Admin = "Admin";
         public static string Client = "Client";
         public static string ServiceProvider = "Tattoo Artist";
+
+        //Session strings
+        public static string LoggedUserSession = "ssLoggedUser";
 
         //Appointment Responses
         public static string AppointmentAdded = "Appointment added successfully.";
@@ -22,8 +26,9 @@ namespace AppointmentScheduler.Utility
         public static string AppointmentAddError = "Something went wrong, Please try again.";
         public static string AppointmentUpdateError = "Something went wrong, Please try again.";
         public static string AppointmentConfirmError = "Something went wrong, Please try again.";
-
         public static string SomethingWentWrong = "Something went wrong, Please try again.";
+
+        //Appointment Responses status
         public static int SucessStatus = 1;
         public static int FailureStatus = 0;
         public static int UpdateStatus = 2;
