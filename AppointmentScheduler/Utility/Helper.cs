@@ -16,6 +16,9 @@ namespace AppointmentScheduler.Utility
         //Session strings
         public static string LoggedUserSession = "ssLoggedUser";
 
+        //String Formatations
+        public static string DatetimeFormat = "yyyy-MM-dd HH:mm:ss";
+
         //Appointment Responses
         public static string AppointmentAdded = "Appointment added successfully.";
         public static string AppointmentUpdated = "Appointment updated successfully.";
@@ -35,6 +38,16 @@ namespace AppointmentScheduler.Utility
 
         //TempDatas
         public static string TempDataNewCreatedUserName = "tdUserName";
+        
+        //Email 
+        public static string EmailAppointmentCreated = "Appointment Booked";
+        public static string EmailFromName = "Appointment Booking";
+        internal static object EmailFromAddress = "diegoof@gmail.com";
+
+        public static string EmailMessageAppointmentCreated(string name, string dateBooked)
+        {
+            return $"Your appointment with {name} is booked on {dateBooked} and in pending status";
+        }
 
         /// <summary>
         /// Create a list with roles of user types for drop-downs
