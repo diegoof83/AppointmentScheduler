@@ -65,7 +65,20 @@ namespace AppointmentScheduler.Services
 
             if (model.Id > 0)//update
             {
-                //TODO Update appointment implementation
+                var appointment = _dbContext.Appointments.FirstOrDefault(ap => ap.Id == model.Id);                
+                if (appointment is null)
+                    return Helper.FailureStatus;
+
+                appointment.Title = model.Title;
+                appointment.Description = model.Description;
+                appointment.StartTime = DateTime.Parse(model.StartTime);
+                appointment.EndTime = GetEndTime(model);
+                appointment.Duration = model.Duration;
+                appointment.ClientId = model.ClientId;
+                appointment.ResponsableAdminId = model.ResponsableAdminId;//TODO - Get the Admin ID and set as responsible for the appointment                 
+
+                await _dbContext.SaveChangesAsync();
+                //TODO - Send Email after Updates
                 return Helper.UpdateStatus;
             }
             else//insert
@@ -79,7 +92,7 @@ namespace AppointmentScheduler.Services
                     Duration = model.Duration,
                     ServiceProviderId = model.ServiceProviderId,
                     ClientId = model.ClientId,
-                    ResponsableAdminId = model.ResponsableAdminId,//TODO Get the Admin ID and set as responsible for the appointment 
+                    ResponsableAdminId = model.ResponsableAdminId,//TODO - Get the Admin ID and set as responsible for the appointment 
                     IsApproved = false
                 };
 
