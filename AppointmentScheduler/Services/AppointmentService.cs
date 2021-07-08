@@ -58,7 +58,7 @@ namespace AppointmentScheduler.Services
 
         public async Task<int> Book(AppointmentVM model)
         {
-            if (model == null)
+            if (model is null)
                 return Helper.FailureStatus;
             if (model.Id > 0)//update
             {
@@ -137,6 +137,32 @@ namespace AppointmentScheduler.Services
                     ClientName = _dbContext.Users.Where(u => u.Id == ap.ClientId).Select(u => u.FullName).FirstOrDefault(),
                     ServiceProviderName = _dbContext.Users.Where(u => u.Id == ap.ServiceProviderId).Select(u => u.FullName).FirstOrDefault()
                 }).SingleOrDefault();
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            var appointment = _dbContext.Appointments.FirstOrDefault(ap => ap.Id == id);
+
+            if(appointment is not null)
+            {
+                _dbContext.Appointments.Remove(appointment);
+                return await _dbContext.SaveChangesAsync();
+            }
+
+            return 0;
+        }
+
+        public async Task<int> ConfirmBoking(int id)
+        {
+            var appointment = _dbContext.Appointments.FirstOrDefault(ap => ap.Id == id);
+
+            if (appointment is not null)
+            {
+                appointment.IsApproved = true;
+                return await _dbContext.SaveChangesAsync();
+            }
+
+            return 0;
         }
     }
 }

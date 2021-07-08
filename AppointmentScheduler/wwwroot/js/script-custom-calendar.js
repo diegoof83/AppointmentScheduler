@@ -16,7 +16,8 @@ function InitializeCalendar() {
         if (calendarEl != null) {
             calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                headerToolbar: {
+                headerToolbar:
+                {
                     left: 'prev,next,today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
@@ -83,8 +84,7 @@ function getEventDetails(info) {
 }
 
 function onShowModal(obj, isEventDetail) {
-    if (isEventDetail != null) {
-
+    if (isEventDetail != null) {//Updating new appointment    
         $("#id").val(obj.id);
         $("#title").val(obj.title);
         $("#description").val(obj.description);
@@ -94,17 +94,28 @@ function onShowModal(obj, isEventDetail) {
         $("#clientId").val(obj.clientId);
         $("#clientName").html(obj.clientName);
         $("#serviceProviderName").html(obj.serviceProviderName);
+
         if (obj.isApproved) {
             $("#status").html('Approved');
+            $("#btnConfirm").addClass('d-none');
+            $("#btnSubmit").addClass('d-none');
         }
         else {
             $("#status").html('Pending');
+            $("#btnConfirm").removeClass('d-none');
+            $("#btnSubmit").removeClass('d-none');
         }
+
+        $("#btnDelete").removeClass('d-none');
     }
-    else {
+    else {//Adding new appointment
+    
         $("#id").val(0);
         $("#startTime").val(obj.startStr + " " + new moment().format("hh:mm A"));//gets the date/time which was selected/clicked
+        $("#btnDelete").addClass('d-none');        
+        $("#btnSubmit").removeClass('d-none');
     }
+
     $("#appointmentInput").modal("show");
 }
 
@@ -120,7 +131,6 @@ function onCloseModal() {
 
 function onSubmitModal() {
     if (checkValidation()) {
-
         var requestData = {
             Id: parseInt($("#id").val()),
             Title: $("#title").val(),
@@ -155,6 +165,7 @@ function onSubmitModal() {
 
 function checkValidation() {
     var isValid = true;
+
     if ($("#title").val() === undefined || $("#title").val() === "") {
         isValid = false;
         $("#title").addClass('error');
@@ -175,11 +186,47 @@ function checkValidation() {
 }
 
 function onDeleteModal() {
-
+    var id = $("#id").val();
+    $.ajax({
+        url: routeURL + '/api/Appointment/Delete/' + id,
+        type: 'DELETE',
+        dataType: 'JSON',
+        success: function (response) {
+            if (response.status === 1) {
+                calendar.refetchEvents();
+                $.notify(response.message, "success");
+                onCloseModal();
+            }
+            else {
+                $.notify(response.message, "error");
+            }
+        },
+        error: function (xhr) {
+            $.notify("Error", "error");
+        }
+    });
 }
 
 function onConfirmModal() {
-
+    var id = $("#id").val();
+    $.ajax({
+        url: routeURL + '/api/Appointment/Confirm/' + id,
+        type: 'PUT',
+        dataType: 'JSON',
+        success: function (response) {
+            if (response.status === 1) {
+                calendar.refetchEvents();
+                $.notify(response.message, "success");
+                onCloseModal();
+            }
+            else {
+                $.notify(response.message, "error");
+            }
+        },
+        error: function (xhr) {
+            $.notify("Error", "error");
+        }
+    });
 }
 
 function onServiceProviderSelection() {

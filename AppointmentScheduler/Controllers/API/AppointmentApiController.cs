@@ -105,5 +105,45 @@ namespace AppointmentScheduler.Controllers.API
 
             return Ok(response);
         }
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            CommonResponse<int> response = new();
+
+            try
+            {
+                response.Status = await _appointmentService.Delete(id);
+                response.Message = response.Status == Helper.SucessStatus ? Helper.AppointmentDeleted : Helper.SomethingWentWrong;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = Helper.FailureStatus;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        [Route("Confirm/{id}")]
+        public async Task<IActionResult> Confirm(int id)
+        {
+            CommonResponse<int> response = new();
+
+            try
+            {
+                response.Status = await _appointmentService.ConfirmBoking(id);
+                response.Message = response.Status == Helper.SucessStatus ? Helper.AppointmentConfirmed : Helper.AppointmentConfirmError;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = Helper.FailureStatus;
+            }
+
+            return Ok(response);
+        }
     }
 }
