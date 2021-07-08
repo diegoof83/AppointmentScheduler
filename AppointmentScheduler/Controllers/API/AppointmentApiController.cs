@@ -31,22 +31,73 @@ namespace AppointmentScheduler.Controllers.API
 
         [HttpPost]
         [Route("Book")]
-        public IActionResult Book(AppointmentVM appointment)
+        public IActionResult Book([FromBody] AppointmentVM appointment)
         {
-            CommonResponse<int> response = new CommonResponse<int>();
+            CommonResponse<int> response = new();
             try
             {
                 response.Status = _appointmentService.Book(appointment).Result;
-                if(response.Status == 1)
+                if (response.Status == Helper.UpdateStatus)
                 {
                     response.Message = Helper.AppointmentUpdated;
                 }
-                if(response.Status == 2)
+                else if (response.Status == Helper.SucessStatus)
                 {
                     response.Message = Helper.AppointmentAdded;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = Helper.FailureStatus;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("GetAppointments")]
+        public IActionResult GetAppointments(string providerId)
+        {
+            CommonResponse<List<AppointmentVM>> response = new();
+
+            try
+            {
+                if (_loggedUserRole.Equals(Helper.Client))
+                {
+                    response.Model = _appointmentService.GetClientAppointments(_loggedUserId);
+                }
+                else if (_loggedUserRole.Equals(Helper.ServiceProvider))
+                {
+                    response.Model = _appointmentService.GetServiceProviderAppointments(_loggedUserId);
+                }
+                else//Admin
+                {
+                    response.Model = _appointmentService.GetServiceProviderAppointments(providerId);
+                }
+                response.Status = Helper.SucessStatus;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = Helper.FailureStatus;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("GetAppointment/{id}")]
+        public IActionResult GetAppointment(int id)
+        {
+            CommonResponse<AppointmentVM> response = new();
+
+            try
+            {
+                response.Model = _appointmentService.GetAppointment(id);
+                response.Status = Helper.SucessStatus;
+            }
+            catch (Exception ex)
             {
                 response.Message = ex.Message;
                 response.Status = Helper.FailureStatus;
