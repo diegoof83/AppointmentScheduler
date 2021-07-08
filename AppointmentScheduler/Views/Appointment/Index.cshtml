@@ -4,11 +4,12 @@
         {
             <div class="form-group row" id="divServiceProviderList">
                 <label>Select @AppointmentScheduler.Utility.Helper.ServiceProvider</label>
-                @Html.DropDownList("serviceProviderId", new SelectList(ViewBag.ServiceProviderList, "Id", "Name"), new { @class = "form-control select2" })
+                @Html.DropDownList("serviceProviderId", new SelectList(ViewBag.ServiceProviderList, "Id", "Name"), new
+                { @class = "form-control select2", @onchange = "onServiceProviderSelection();" })
             </div>
         }
         <div id="calendar"></div>
-    </div>    
+    </div>
 </div>
 
 <partial name="_AddEditAppointment" />

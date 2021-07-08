@@ -55,8 +55,8 @@ namespace AppointmentScheduler.Controllers.API
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        [Route("GetServiceProviderAppointments")]
+        [HttpGet]
+        [Route("GetAppointments")]
         public IActionResult GetAppointments(string providerId)
         {
             CommonResponse<List<AppointmentVM>> response = new();
@@ -75,6 +75,26 @@ namespace AppointmentScheduler.Controllers.API
                 {
                     response.Model = _appointmentService.GetServiceProviderAppointments(providerId);
                 }
+                response.Status = Helper.SucessStatus;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = Helper.FailureStatus;
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("GetAppointment/{id}")]
+        public IActionResult GetAppointment(int id)
+        {
+            CommonResponse<AppointmentVM> response = new();
+
+            try
+            {
+                response.Model = _appointmentService.GetAppointment(id);
                 response.Status = Helper.SucessStatus;
             }
             catch (Exception ex)

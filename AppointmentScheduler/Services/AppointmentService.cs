@@ -119,5 +119,24 @@ namespace AppointmentScheduler.Services
                     IsApproved = ap.IsApproved
                 }).ToList();
         }
+
+        public AppointmentVM GetAppointment(int id)
+        {
+            return _dbContext.Appointments.Where(ap => ap.Id == id)
+                .Select(ap => new AppointmentVM()
+                {
+                    Id = ap.Id,
+                    Description = ap.Description,
+                    Title = ap.Title,
+                    StartTime = ap.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    EndTime = ap.EndTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Duration = ap.Duration,
+                    IsApproved = ap.IsApproved,
+                    ClientId = ap.ClientId,
+                    ServiceProviderId = ap.ServiceProviderId,
+                    ClientName = _dbContext.Users.Where(u => u.Id == ap.ClientId).Select(u => u.FullName).FirstOrDefault(),
+                    ServiceProviderName = _dbContext.Users.Where(u => u.Id == ap.ServiceProviderId).Select(u => u.FullName).FirstOrDefault()
+                }).SingleOrDefault();
+        }
     }
 }
