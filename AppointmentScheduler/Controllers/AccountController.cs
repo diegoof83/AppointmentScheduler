@@ -87,12 +87,22 @@ namespace AppointmentScheduler.Controllers
 
                 //create a new user
                 var result = await _userManager.CreateAsync(user, model.Password);
-                //sign in the new user
+                                
                 if (result.Succeeded)
                 {
+                    //set the user's role
                     await _userManager.AddToRoleAsync(user, model.RoleName);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+
+                    //sign in the new user in case user is not Admin(The admin could be registering others user only)
+                    if (!User.IsInRole(Helper.Admin))
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                    }
+                    else
+                    {
+                        TempData[Helper.TempDataNewCreatedUserName] = user.FullName;
+                    }                    
+                    return RedirectToAction("Index", "Appointment");
                 }
                 //show message error in case they happen
                 foreach(var error in result.Errors)

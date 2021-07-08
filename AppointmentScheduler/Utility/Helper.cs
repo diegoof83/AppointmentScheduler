@@ -33,18 +33,27 @@ namespace AppointmentScheduler.Utility
         public static int FailureStatus = 0;
         public static int UpdateStatus = 2;
 
+        //TempDatas
+        public static string TempDataNewCreatedUserName = "tdUserName";
+
         /// <summary>
         /// Create a list with roles of user types for drop-downs
         /// </summary>
         /// <returns>A list of all role options of users</returns>
-        public static List<SelectListItem> UserRolesForDropDown()
+        public static List<SelectListItem> UserRolesForDropDown(bool isAdmin)
         {
-            return new List<SelectListItem>
+            var roles = new List<SelectListItem>
             {
-                new SelectListItem{Text=Helper.Admin, Value=Helper.Admin},
                 new SelectListItem{Text=Helper.ServiceProvider, Value=Helper.ServiceProvider},
                 new SelectListItem{Text=Helper.Client, Value=Helper.Client}
             };
+
+            if (isAdmin)
+            {
+                roles.Add(new SelectListItem { Text = Helper.Admin, Value = Helper.Admin });
+            }
+
+            return roles;
         }
 
         public static List<SelectListItem> GetTimeDropDown()
