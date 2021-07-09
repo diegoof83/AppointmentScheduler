@@ -1,6 +1,7 @@
 ﻿using AppointmentScheduler.Models;
 using AppointmentScheduler.Models.ViewModels;
 using AppointmentScheduler.Utility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,18 +13,14 @@ namespace AppointmentScheduler.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(ApplicationDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,
-            SignInManager<ApplicationIdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
-        {
-            _dbContext = dbContext;
+        public AccountController(UserManager<ApplicationIdentityUser> userManager,
+            SignInManager<ApplicationIdentityUser> signInManager)
+        {            
             _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
         }
 
         public IActionResult Login()
@@ -47,6 +44,10 @@ namespace AppointmentScheduler.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    //Adding the logged user into the session
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    HttpContext.Session.SetString(Helper.LoggedUserSession, user.FullName);
+
                     return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid email or password.");
@@ -56,12 +57,7 @@ namespace AppointmentScheduler.Controllers
 
         public async Task<IActionResult> Register()
         {
-            if (!_roleManager.RoleExistsAsync(Helper.Admin).GetAwaiter().GetResult())
-            {
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Admin));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.ServiceProvider));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Client));
-            }
+            
             return View();
         }
 
@@ -82,12 +78,22 @@ namespace AppointmentScheduler.Controllers
 
                 //create a new user
                 var result = await _userManager.CreateAsync(user, model.Password);
-                //sign in the new user
+                                
                 if (result.Succeeded)
                 {
+                    //set the user's role
                     await _userManager.AddToRoleAsync(user, model.RoleName);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+
+                    //sign in the new user in case user is not Admin(The admin could be registering others user only)
+                    if (!User.IsInRole(Helper.Admin))
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                    }
+                    else
+                    {
+                        TempData[Helper.TempDataNewCreatedUserName] = user.FullName;
+                    }                    
+                    return RedirectToAction("Index", "Appointment");
                 }
                 //show message error in case they happen
                 foreach(var error in result.Errors)

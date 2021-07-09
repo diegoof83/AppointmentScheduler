@@ -1,4 +1,15 @@
 ﻿<div class="row">
+
+    @if (TempData.ContainsKey(AppointmentScheduler.Utility.Helper.TempDataNewCreatedUserName))
+    {
+        <div class="container">
+            <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
+                <strong>User @TempData[AppointmentScheduler.Utility.Helper.TempDataNewCreatedUserName].ToString() was created.</strong>
+            </div>
+        </div>
+    }
+
     <div class="container">
         @if (User.IsInRole(AppointmentScheduler.Utility.Helper.Admin))
         {

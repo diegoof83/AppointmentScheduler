@@ -1,6 +1,13 @@
 ﻿@model AppointmentScheduler.Models.ViewModels.RegisterVM
 
-<h2>Create your account</h2>
+@if (User.IsInRole(AppointmentScheduler.Utility.Helper.Admin))
+{
+    <h2>Register a new account</h2>
+}
+else
+{
+    <h2>Create your account</h2>
+}
 <div class="row">
     <div class="col-md-5">
         <form id="account" method="post" asp-controller="Account" asp-action="Register">
@@ -44,7 +51,9 @@
             <div class="form-group">
                 <label asp-for="RoleName"></label>
                 <div class="form-group">
-                    <select asp-for="RoleName" asp-items="@AppointmentScheduler.Utility.Helper.UserRolesForDropDown()" class="form-control">
+                    <select asp-for="RoleName"
+                            asp-items="@AppointmentScheduler.Utility.Helper.UserRolesForDropDown(User.IsInRole(AppointmentScheduler.Utility.Helper.Admin))"
+                            class="form-control">
                         <option selected>-- Select --</option>
                     </select>
                     <span asp-validation-for="RoleName" class="text-danger"></span>
@@ -57,7 +66,7 @@
             </div>
             <hr />
             <p class="form-group">
-                <a asp-action="Login">Back to Sign In</a>
+                <a asp-action="Login">Sign In</a>
             </p>
         </form>
     </div>
@@ -65,5 +74,7 @@
 
 @section Scripts
 {
-    @{<partial name="_ValidationScriptsPartial" />}
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
 }
