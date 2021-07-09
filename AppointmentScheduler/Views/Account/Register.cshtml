@@ -65,18 +65,9 @@ else
                 </div>
             </div>
             <hr />
-            @if (User.IsInRole(AppointmentScheduler.Utility.Helper.Admin))
-            {
-                <p class="form-group">
-                    <a asp-controller="Appointment" asp-action="Index">Back to Appointments</a>
-                </p>
-            }
-            else
-            {
-                <p class="form-group">
-                    <a asp-action="Login">Sign In</a>
-                </p>
-            }
+            <p class="form-group">
+                <a asp-action="Login">Sign In</a>
+            </p>
         </form>
     </div>
 </div>
