@@ -13,18 +13,14 @@ namespace AppointmentScheduler.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<ApplicationIdentityUser> _userManager;
         private readonly SignInManager<ApplicationIdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(ApplicationDbContext dbContext, UserManager<ApplicationIdentityUser> userManager,
-            SignInManager<ApplicationIdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
-        {
-            _dbContext = dbContext;
+        public AccountController(UserManager<ApplicationIdentityUser> userManager,
+            SignInManager<ApplicationIdentityUser> signInManager)
+        {            
             _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
         }
 
         public IActionResult Login()
@@ -61,12 +57,7 @@ namespace AppointmentScheduler.Controllers
 
         public async Task<IActionResult> Register()
         {
-            if (!_roleManager.RoleExistsAsync(Helper.Admin).GetAwaiter().GetResult())
-            {
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Admin));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.ServiceProvider));
-                await _roleManager.CreateAsync(new IdentityRole(Helper.Client));
-            }
+            
             return View();
         }
 

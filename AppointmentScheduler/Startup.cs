@@ -1,3 +1,4 @@
+using AppointmentScheduler.DbInitialization;
 using AppointmentScheduler.Models;
 using AppointmentScheduler.Services;
 using AppointmentScheduler.Utility;
@@ -49,10 +50,13 @@ namespace AppointmentScheduler
 
             //Injecting Email Sender
             services.AddScoped<IEmailSender, EmailSender>();
+
+            //Injecting DbInicialization
+            services.AddScoped<IDbInitializer, DbInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -71,6 +75,9 @@ namespace AppointmentScheduler
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+
+            //initialize and seed database
+            dbInitializer.Initialize();
 
             app.UseEndpoints(endpoints =>
             {
